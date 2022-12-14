@@ -1,12 +1,24 @@
 import Room from "../models/Room"
 import ErrorHandler from "../utils/errorController"
 import catchAsync from "../middlewares/catchAsync"
+import APIFeatures from "../utils/apiFeatures"
 
 const allRooms = catchAsync(async (req, res) => {
-    const rooms = await Room.find()
+
+    const resPerPage = 4;
+    const roomsCount = await Room.countDocuments()
+
+    const apiFeatures = new APIFeatures(Room.find(), req.query).search().filter()
+
+    let rooms = await apiFeatures.query
+    let filteredRoomCount = rooms.length
+    apiFeatures.pagination(resPerPage)
+    rooms = await apiFeatures.query
     res.status(200).json({
         status: true,
-        count: rooms.length,
+        roomsCount,
+        filteredRoomCount,
+        resPerPage,
         rooms
     })
 })
