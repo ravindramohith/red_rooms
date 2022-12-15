@@ -68,8 +68,6 @@ const deleteSingleRoom = catchAsync(async (req, res) => {
     });
 })
 
-
-
 export {
     allRooms,
     newRoom,
