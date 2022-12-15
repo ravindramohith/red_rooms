@@ -13,5 +13,5 @@ export default function Index() {
 
 
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-  await context.store.dispatch(getRooms(context.req))
+  await context.store.dispatch(getRooms(context.req, context.query.page, context.query.location, context.query.guests, context.query.category))
 })

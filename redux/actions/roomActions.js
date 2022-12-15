@@ -3,10 +3,16 @@ import { GET_ROOMS_FAILURE, GET_ROOMS_SUCCESS, CLEAR_ERRORS, GET_ROOM_FAILURE, G
 import absoluteUrl from 'next-absolute-url'
 
 //Get all Rooms
-export const getRooms = (req) => async (dispatch) => {
+export const getRooms = (req, currentPage = 1, location = '', guests, category) => async (dispatch) => {
     try {
         const { origin } = absoluteUrl(req);
-        const { data } = await axios.get(`${origin}/api/rooms`)
+        let link = `${origin}/api/rooms/?page=${currentPage}&location=${location}`
+        if (!currentPage || currentPage == NaN) {
+            currentPage = 1;
+        }
+        if (guests) link = link + `&guestCapacity=${guests}`
+        if (category) { link = link + `&category=${category}` }
+        const { data } = await axios.get(link);
         dispatch({
             type: GET_ROOMS_SUCCESS,
             payload: data
@@ -21,11 +27,9 @@ export const getRooms = (req) => async (dispatch) => {
 
 //Get Room
 export const getRoom = (req, id) => async (dispatch) => {
-    console.log("S")
     try {
         const { origin } = absoluteUrl(req);
         const { data } = await axios.get(`${origin}/api/rooms/${id}`)
-        console.log(data)
         dispatch({
             type: GET_ROOM_SUCCESS,
             payload: data.room
