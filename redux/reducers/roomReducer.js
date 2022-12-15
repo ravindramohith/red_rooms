@@ -19,7 +19,7 @@ export const allRoomsReducer = (state = { rooms: [] }, action) => {
             return { error: null, ...state }
 
         default:
-            return { rooms: [] }
+            return { ...state }
     }
 }
 

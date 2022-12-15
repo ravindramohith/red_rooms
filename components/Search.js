@@ -11,18 +11,19 @@ const Search = () => {
         if (location.trim()) {
             router.push(`/?location=${location}&guests=${guests}&category=${category}`)
         } else {
-            if (category && guests) {
-                router.push(`/?guests=${guests}&category=${category}`)
-            }
-            else if (guests) {
-                router.push(`/?guests=${guests}`)
-            }
-            else if (category) {
-                router.push(`/?category=${category}`)
-            }
-            else {
-                router.push('/')
-            }
+            // if (category && guests) {
+            //     router.push(`/?guests=${guests}&category=${category}`)
+            // }
+            // else if (guests) {
+            //     router.push(`/?guests=${guests}`)
+            // }
+            // else if (category) {
+            //     router.push(`/?category=${category}`)
+            // }
+            // else {
+            //     router.push('/')
+            // }
+            router.push('/')
         }
     }
     return (
