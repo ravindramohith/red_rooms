@@ -1,18 +1,34 @@
 import React from 'react'
-import { toast } from 'react-toastify'
-import { clearErrors } from '../../redux/actions/roomActions'
-import { useDispatch, useSelector } from 'react-redux'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearErrors } from '../../redux/actions/roomActions'
+import { checkBooking, checkBookedDates, getMyBookings } from '../../redux/actions/bookingActions'
 import { Carousel } from 'react-bootstrap'
 import { BiRupee } from 'react-icons/bi'
 import RoomFeatures from './RoomFeatures'
 import { useRouter } from 'next/router'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { CHECK_BOOKING_RESET } from '../../redux/constants/bookingConstants'
 
 const RoomDetails = () => {
+    const [checkInDate, setCheckInDate] = React.useState()
+    const [checkOutDate, setCheckOutDate] = React.useState()
+    const [daysOfStay, setDaysOfStay] = React.useState()
+    const { user } = useSelector(state => state.auth)
+    const { dates } = useSelector(state => state.bookedDates)
     const { room, error } = useSelector(state => state.roomDetails)
+    const { available, loading: bookLoading } = useSelector(state => state.checkBooking)
     const dispatch = useDispatch()
     const router = useRouter()
+    const { id } = router.query
+    const excludedDates = []
+    dates.forEach(date => {
+        excludedDates.push(new Date(date))
+    })
 
     React.useEffect(() => {
         if (error) {
@@ -20,10 +36,43 @@ const RoomDetails = () => {
             dispatch(clearErrors())
             router.push('/')
         }
-    }, [])
+        dispatch(checkBookedDates(id))
+        dispatch(getMyBookings())
+    }, [dispatch, id])
 
-    let QueryParams;
-    if (typeof window !== 'undefined') { }
+    const onChange = (dates) => {
+        const [checkInDate, checkOutDate] = dates;
+        setCheckInDate(checkInDate)
+        setCheckOutDate(checkOutDate)
+        if (checkInDate && checkOutDate) {
+            const days = Math.floor(((new Date(checkOutDate) - new Date(checkInDate)) / 86400000) + 1)
+            setDaysOfStay(days)
+            dispatch(checkBooking(id, checkInDate.toISOString(), checkOutDate.toISOString()))
+        }
+    }
+
+    const newBookingHandler = async () => {
+        const BookingData = {
+            room: router.query.id,
+            checkInDate,
+            checkOutDate,
+            daysOfStay,
+            amountPaid: 90,
+            paymentInfo: {
+                id: "STRIPE",
+                status: "OK",
+            }
+        }
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+            const { data } = await axios.post(`/api/bookings`, BookingData, config)
+        } catch (err) { console.log(err); }
+    }
+
     return (
         <>{room &&
             <Head>
@@ -31,13 +80,13 @@ const RoomDetails = () => {
             </Head>
         }
             {room &&
-                <div class="container container-fluid">
-                    <h2 class='mt-5'>{room.name}</h2>
+                <div className="container container-fluid">
+                    <h2 className='mt-5'>{room.name}</h2>
                     <p>{room.address}</p>
 
-                    <div class="ratings mt-auto mb-3">
-                        <div class="rating-outer">
-                            <div class="rating-inner" style={{ width: `${(room.ratings / 5) * 100}%` }}></div>
+                    <div className="ratings mt-auto mb-3">
+                        <div className="rating-outer">
+                            <div className="rating-inner" style={{ width: `${(room.ratings / 5) * 100}%` }}></div>
                         </div>
                         <span id="no_of_reviews">({room.numOfReviews} Reviews)</span>
                     </div>
@@ -57,41 +106,58 @@ const RoomDetails = () => {
                         ))}
                     </Carousel>
 
-                    <div class="row my-5">
-                        <div class="col-12 col-md-6 col-lg-8">
+                    <div className="row my-5">
+                        <div className="col-12 col-md-6 col-lg-8">
                             <h3>Description</h3>
                             <p>{room.description}</p>
                             <RoomFeatures room={room} />
                         </div>
 
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="booking-card shadow-lg p-4">
-                                <p class='price-per-night'><b><BiRupee />28</b> / night</p>
-                                <button class="btn btn-block py-3 booking-btn">Pay</button>
+                        <div className="col-12 col-md-6 col-lg-4">
+                            <div className="booking-card shadow-lg p-4">
+                                <p className='price-per-night'><b><BiRupee />{room.pricePerNight}</b> / night</p>
+                                <p className='mt-5 mb-3'>
+                                    Pick Check In and Check Out Dates
+                                </p>
+                                <DatePicker
+                                    className='w-100'
+                                    selected={checkInDate}
+                                    onChange={onChange}
+                                    startDate={checkInDate}
+                                    endDate={checkOutDate}
+                                    minDate={new Date()}
+                                    excludeDates={excludedDates}
+                                    selectsRange
+                                    inline
+                                />
+                                {available === true && <div className='alert alert-success my-3 font-weight-bold'>Room is available! Book now.</div>}
+                                {available && !user && <div className='alert alert-danger my-3 font-weight-bold'>Please Login to book Room.</div>}
+                                {available === false && <div className='alert alert-danger my-3 font-weight-bold'>Room is not available!</div>}
+                                {available && user && <button className="btn btn-block py-3 booking-btn" onClick={newBookingHandler}>Pay</button>}
                             </div>
                         </div>
                     </div>
 
 
-                    <div class="reviews w-75">
+                    <div className="reviews w-75">
                         <h3>Reviews:</h3>
                         <hr />
-                        <div class="review-card my-3">
-                            <div class="rating-outer">
-                                <div class="rating-inner"></div>
+                        <div className="review-card my-3">
+                            <div className="rating-outer">
+                                <div className="rating-inner"></div>
                             </div>
-                            <p class="review_user">by John</p>
-                            <p class="review_comment">Good Quality</p>
+                            <p className="review_user">by John</p>
+                            <p className="review_comment">Good Quality</p>
 
                             <hr />
                         </div>
 
-                        <div class="review-card my-3">
-                            <div class="rating-outer">
-                                <div class="rating-inner"></div>
+                        <div className="review-card my-3">
+                            <div className="rating-outer">
+                                <div className="rating-inner"></div>
                             </div>
-                            <p class="review_user">by John</p>
-                            <p class="review_comment">Good Quality</p>
+                            <p className="review_user">by John</p>
+                            <p className="review_comment">Good Quality</p>
 
                             <hr />
                         </div>

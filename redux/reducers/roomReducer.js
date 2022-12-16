@@ -1,4 +1,6 @@
-import { CLEAR_ERRORS, GET_ROOMS_FAILURE, GET_ROOMS_SUCCESS, GET_ROOM_FAILURE, GET_ROOM_SUCCESS } from "../constants/roomConstants";
+import {
+    CLEAR_ERRORS, GET_ROOMS_FAILURE, GET_ROOMS_SUCCESS, GET_ROOM_FAILURE, GET_ROOM_SUCCESS,
+} from "../constants/roomConstants";
 
 export const allRoomsReducer = (state = { rooms: [] }, action) => {
     switch (action.type) {
@@ -39,6 +41,6 @@ export const roomDetailsReducer = (state = { room: {} }, action) => {
             return { error: null, ...state }
 
         default:
-            return { room: {} }
+            return { ...state }
     }
 }
