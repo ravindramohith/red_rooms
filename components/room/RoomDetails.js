@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
+import NewReview from '../review/NewReview'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearErrors } from '../../redux/actions/roomActions'
 import { checkBooking, checkBookedDates, getMyBookings } from '../../redux/actions/bookingActions'
@@ -14,6 +15,7 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import { CHECK_BOOKING_RESET } from '../../redux/constants/bookingConstants'
 import getStripe from '../../utils/getStripe'
+import ListReviews from '../review/ListReviews'
 
 const RoomDetails = () => {
     const [checkInDate, setCheckInDate] = React.useState()
@@ -158,31 +160,12 @@ const RoomDetails = () => {
                             </div>
                         </div>
                     </div>
-
-
-                    <div className="reviews w-75">
-                        <h3>Reviews:</h3>
-                        <hr />
-                        <div className="review-card my-3">
-                            <div className="rating-outer">
-                                <div className="rating-inner"></div>
-                            </div>
-                            <p className="review_user">by John</p>
-                            <p className="review_comment">Good Quality</p>
-
-                            <hr />
-                        </div>
-
-                        <div className="review-card my-3">
-                            <div className="rating-outer">
-                                <div className="rating-inner"></div>
-                            </div>
-                            <p className="review_user">by John</p>
-                            <p className="review_comment">Good Quality</p>
-
-                            <hr />
-                        </div>
-                    </div>
+                    <NewReview />
+                    {room.reviews && room.reviews.length > 0 ?
+                        <ListReviews reviews={room.reviews} />
+                        :
+                        <p><b>No Reviews on this room</b></p>
+                    }
                 </div>
             }
         </>

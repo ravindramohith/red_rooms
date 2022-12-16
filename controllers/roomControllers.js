@@ -1,4 +1,5 @@
 import Room from "../models/Room"
+import Booking from '../models/Booking'
 import ErrorHandler from "../utils/errorController"
 import catchAsync from "../middlewares/catchAsync"
 import APIFeatures from "../utils/apiFeatures"
@@ -68,10 +69,58 @@ const deleteSingleRoom = catchAsync(async (req, res) => {
     });
 })
 
+const createRoomReview = catchAsync(async (req, res, next) => {
+    const { rating, comment, roomId } = req.body
+    const review = {
+        user: req.user._id,
+        name: req.user.name,
+        rating: Number(rating),
+        comment
+    }
+    const room = await Room.findById(roomId);
+    if (!room) {
+        return next(new ErrorHandler("Room not found with id " + roomId, 404))
+    }
+
+    const isReviewed = room.reviews.find(r => r.user.toString() === req.user._id.toString());
+    if (!isReviewed) {
+        room.reviews.push(review);
+        room.numOfReviews = room.reviews.length;
+    } else {
+        room.reviews.forEach(review => {
+            if (review.user.toString() === req.user._id.toString()) {
+                review.comment = comment;
+                review.rating = rating;
+            }
+        })
+    }
+    room.ratings = room.reviews.reduce((acc, item) => item.rating + acc, 0) / room.reviews.length
+    await room.save({ validateBeforeSave: false })
+    res.status(200).json({
+        success: true,
+    })
+})
+
+const checkReviewAvailability = catchAsync(async (req, res, next) => {
+    const { roomId } = req.query
+    console.log(req.query)
+
+    const bookings = await Booking.find({ room: roomId, user: req.user._id })
+
+    const isReviewAvailable = bookings && bookings.length > 0
+    res.status(200).json({
+        success: true,
+        isReviewAvailable
+    })
+})
+
+
 export {
     allRooms,
     newRoom,
     getSingleRoom,
     updateSingleRoom,
-    deleteSingleRoom
+    deleteSingleRoom,
+    createRoomReview,
+    checkReviewAvailability
 }
