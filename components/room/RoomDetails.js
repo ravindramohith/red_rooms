@@ -13,11 +13,13 @@ import "react-datepicker/dist/react-datepicker.css"
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { CHECK_BOOKING_RESET } from '../../redux/constants/bookingConstants'
+import getStripe from '../../utils/getStripe'
 
 const RoomDetails = () => {
     const [checkInDate, setCheckInDate] = React.useState()
     const [checkOutDate, setCheckOutDate] = React.useState()
     const [daysOfStay, setDaysOfStay] = React.useState()
+    const [paymentLoading, setPaymentLoading] = React.useState(false)
     const { user } = useSelector(state => state.auth)
     const { dates } = useSelector(state => state.bookedDates)
     const { room, error } = useSelector(state => state.roomDetails)
@@ -31,13 +33,15 @@ const RoomDetails = () => {
     })
 
     React.useEffect(() => {
+        dispatch(checkBookedDates(id))
         if (error) {
             toast.error(error + ", Redirecting to Homepage...")
             dispatch(clearErrors())
             router.push('/')
         }
-        dispatch(checkBookedDates(id))
-        dispatch(getMyBookings())
+        return () => {
+            dispatch({ type: CHECK_BOOKING_RESET })
+        }
     }, [dispatch, id])
 
     const onChange = (dates) => {
@@ -71,6 +75,23 @@ const RoomDetails = () => {
             }
             const { data } = await axios.post(`/api/bookings`, BookingData, config)
         } catch (err) { console.log(err); }
+    }
+
+    const bookRoom = async (id, pricePerNight) => {
+        setPaymentLoading(true);
+        const amount = pricePerNight * daysOfStay;
+        try {
+            const link = `/api/checkout_session/${id}?checkInDate=${checkInDate.toISOString()}&checkOutDate=${checkOutDate.toISOString()}&daysOfStay=${daysOfStay}`
+            const { data } = await axios.get(link, { params: { amount } });
+            const stripe = await getStripe();
+            stripe.redirectToCheckout({ sessionId: data.id })
+            setPaymentLoading(false);
+
+        } catch (err) {
+            setPaymentLoading(false);
+            console.log(err);
+            toast.error(err);
+        }
     }
 
     return (
@@ -133,7 +154,7 @@ const RoomDetails = () => {
                                 {available === true && <div className='alert alert-success my-3 font-weight-bold'>Room is available! Book now.</div>}
                                 {available && !user && <div className='alert alert-danger my-3 font-weight-bold'>Please Login to book Room.</div>}
                                 {available === false && <div className='alert alert-danger my-3 font-weight-bold'>Room is not available!</div>}
-                                {available && user && <button className="btn btn-block py-3 booking-btn" onClick={newBookingHandler}>Pay</button>}
+                                {available && user && <button className="btn btn-block py-3 booking-btn" onClick={() => bookRoom(room._id, room.pricePerNight)} disabled={bookLoading || paymentLoading ? true : false}>Pay <BiRupee />{daysOfStay * room.pricePerNight}</button>}
                             </div>
                         </div>
                     </div>
