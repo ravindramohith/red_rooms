@@ -1,7 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
-import { signIn } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import ButtonLoader from '../layout/ButtonLoader'
 import { useDispatch, useSelector } from 'react-redux'

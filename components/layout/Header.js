@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useSelector, useDispatch } from 'react-redux'
 import { loadUser } from '../../redux/actions/userActions'
 import { signOut } from 'next-auth/client'
+import { toast } from 'react-toastify'
 
 const Header = () => {
 
@@ -15,6 +16,7 @@ const Header = () => {
 
     const logoutHandler = () => {
         signOut();
+        toast.success("logged out successfully")
     }
 
     return (
@@ -22,9 +24,7 @@ const Header = () => {
             <div className="container">
                 <div className="col-3 p-0">
                     <div className="navbar-brand">
-                        <Link href='/'>
-                            <img style={{ cursor: 'pointer' }} src="/images/bookit_logo.png" alt="BookIT" />
-                        </Link>
+                        <img style={{ cursor: 'pointer' }} src="/images/bookit_logo.png" alt="BookIT" />
                     </div>
                 </div>
 

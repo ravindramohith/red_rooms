@@ -7,7 +7,6 @@ export default (err, req, res, next) => {
     let error = { ...err }
 
     error.message = err.message
-
     // Wrong Mongoose Object ID Error
     if (err.name === 'CastError') {
         const message = `Resource not found. Invalid: ${err.path}`;
