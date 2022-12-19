@@ -166,6 +166,43 @@ const allRoomsAdmin = catchAsync(async (req, res, next) => {
     })
 })
 
+const allReviewsAdmin = catchAsync(async (req, res) => {
+
+    const room = await Room.findById(req.query.id);
+
+    res.status(200).json({
+        success: true,
+        reviews: room.reviews
+    })
+})
+
+const deleteReviewAdmin = catchAsync(async (req, res) => {
+
+    const room = await Room.findById(req.query.id);
+
+    const reviews = room.reviews.filter(review => review._id.toString() !== req.query.reviewId);
+
+    const numOfReviews = reviews.length;
+    let ratings = 0
+    if (reviews.length !== 0) {
+        ratings = room.reviews.reduce((acc, item) => item.rating + acc, 0) / reviews.length
+    }
+
+    await Room.findByIdAndUpdate(req.query.id, {
+        reviews,
+        ratings,
+        numOfReviews
+    }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
+
+    res.status(200).json({
+        success: true
+    })
+})
+
 
 export {
     allRooms,
@@ -176,4 +213,6 @@ export {
     createRoomReview,
     checkReviewAvailability,
     allRoomsAdmin,
+    allReviewsAdmin,
+    deleteReviewAdmin
 }

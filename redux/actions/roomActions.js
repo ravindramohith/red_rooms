@@ -4,7 +4,6 @@ import {
     GET_ROOMS_SUCCESS,
     GET_ROOM_FAILURE,
     GET_ROOM_SUCCESS,
-    NEW_REVIEW_RESET,
     NEW_REVIEW_FAILURE,
     NEW_REVIEW_REQUEST,
     NEW_REVIEW_SUCCESS,
@@ -20,11 +19,15 @@ import {
     UPDATE_ROOM_ADMIN_FAILURE,
     UPDATE_ROOM_ADMIN_REQUEST,
     UPDATE_ROOM_ADMIN_SUCCESS,
-    UPDATE_ROOM_ADMIN_RESET,
     DELETE_ROOM_ADMIN_FAILURE,
     DELETE_ROOM_ADMIN_REQUEST,
     DELETE_ROOM_ADMIN_SUCCESS,
-    DELETE_ROOM_ADMIN_RESET,
+    GET_REVIEWS_ADMIN_FAILURE,
+    GET_REVIEWS_ADMIN_REQUEST,
+    GET_REVIEWS_ADMIN_SUCCESS,
+    DELETE_REVIEW_ADMIN_FAILURE,
+    DELETE_REVIEW_ADMIN_REQUEST,
+    DELETE_REVIEW_ADMIN_SUCCESS,
     CLEAR_ERRORS,
 } from "../constants/roomConstants";
 import absoluteUrl from 'next-absolute-url'
@@ -183,14 +186,43 @@ export const checkReviewAvailability = (roomId) => async (dispatch) => {
     }
 }
 
+export const getroomReviewsAdmin = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: GET_REVIEWS_ADMIN_REQUEST })
+        const link = `/api/reviews/?id=${id}`
+        const { data } = await axios.get(link);
+        dispatch({
+            type: GET_REVIEWS_ADMIN_SUCCESS,
+            payload: data.reviews
+        })
+    } catch (e) {
+        dispatch({
+            type: GET_REVIEWS_ADMIN_FAILURE,
+            payload: e.response.data.message
+        })
+    }
+}
+
+export const deleteReviewAdmin = (roomId, reviewId) => async (dispatch) => {
+    try {
+        dispatch({ type: DELETE_REVIEW_ADMIN_REQUEST })
+        const link = `/api/reviews/?id=${roomId}&reviewId=${reviewId}`
+        const { data } = await axios.delete(link);
+        dispatch({
+            type: DELETE_REVIEW_ADMIN_SUCCESS,
+            payload: data.success
+        })
+    } catch (e) {
+        dispatch({
+            type: DELETE_REVIEW_ADMIN_FAILURE,
+            payload: e.response.data.message
+        })
+    }
+}
+
 //Clear Errors
 export const clearErrors = () => async (dispatch) => {
     dispatch({
         type: CLEAR_ERRORS,
     })
 }
-
-
-// export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
-//     await store.dispatch(getRooms(req))
-//   })

@@ -25,6 +25,13 @@ import {
     DELETE_ROOM_ADMIN_REQUEST,
     DELETE_ROOM_ADMIN_SUCCESS,
     DELETE_ROOM_ADMIN_RESET,
+    GET_REVIEWS_ADMIN_FAILURE,
+    GET_REVIEWS_ADMIN_REQUEST,
+    GET_REVIEWS_ADMIN_SUCCESS,
+    DELETE_REVIEW_ADMIN_FAILURE,
+    DELETE_REVIEW_ADMIN_REQUEST,
+    DELETE_REVIEW_ADMIN_RESET,
+    DELETE_REVIEW_ADMIN_SUCCESS,
     CLEAR_ERRORS,
 } from "../constants/roomConstants";
 
@@ -162,6 +169,37 @@ export const roomAdminReducer = (state = {}, action) => {
     }
 }
 
+export const reviewAdminReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DELETE_REVIEW_ADMIN_REQUEST:
+            return {
+                loading: true,
+            }
+        case DELETE_REVIEW_ADMIN_SUCCESS:
+            return {
+                loading: false,
+                isDeleted: action.payload
+            }
+
+        case DELETE_REVIEW_ADMIN_FAILURE:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case DELETE_REVIEW_ADMIN_RESET:
+            return {
+                loading: false,
+                isDeleted: false
+            }
+
+        case CLEAR_ERRORS:
+            return { error: null, ...state }
+
+        default:
+            return { ...state }
+    }
+}
+
 export const newReviewReducer = (state = {}, action) => {
     switch (action.type) {
 
@@ -205,6 +243,29 @@ export const checkReviewReducer = (state = { reviewAvailable: null }, action) =>
                 reviewAvailable: action.payload
             }
         case REVIEW_AVAILABILITY_FAILURE:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case CLEAR_ERRORS:
+            return { error: null, ...state }
+
+        default:
+            return { ...state }
+    }
+}
+export const roomReviewsAdminReducer = (state = { reviews: [] }, action) => {
+    switch (action.type) {
+        case GET_REVIEWS_ADMIN_REQUEST:
+            return {
+                loading: true,
+            }
+        case GET_REVIEWS_ADMIN_SUCCESS:
+            return {
+                loading: false,
+                reviews: action.payload
+            }
+        case GET_REVIEWS_ADMIN_FAILURE:
             return {
                 loading: false,
                 error: action.payload
