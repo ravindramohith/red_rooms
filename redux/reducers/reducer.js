@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
-import { allRoomsReducer, checkReviewReducer, newReviewReducer, roomDetailsReducer } from './roomReducer'
+import { allRoomsReducer, checkReviewReducer, newReviewReducer, roomDetailsReducer, newRoomAdminReducer, roomAdminReducer } from './roomReducer'
 import { authReducer, userReducer, forgotPasswordReducer } from './userReducers'
 import { checkBookingReducer, bookedDatesReducer, myBookingsReducer, getBookingReducer } from './bookingReducers'
 
 const reducer = combineReducers({
     allRooms: allRoomsReducer,
     roomDetails: roomDetailsReducer,
+    newRoom: newRoomAdminReducer,
+    room: roomAdminReducer,
     auth: authReducer,
     user: userReducer,
     forgotPassword: forgotPasswordReducer,

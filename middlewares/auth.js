@@ -8,3 +8,13 @@ export const Authorization = catchAsync(async (req, res, next) => {
     req.user = session.user
     next()
 })
+
+export const authorizeRules = (...roles) => {
+    console.log(roles)
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return next(new ErrorHandler(`You are not authorized to access this resource with role(${req.user.role}).`, 403))
+        }
+        next()
+    }
+}

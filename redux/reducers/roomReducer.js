@@ -1,16 +1,40 @@
 import {
-    CLEAR_ERRORS, GET_ROOMS_FAILURE, GET_ROOMS_SUCCESS, GET_ROOM_FAILURE, GET_ROOM_SUCCESS,
+    GET_ROOMS_FAILURE,
+    GET_ROOMS_SUCCESS,
+    GET_ROOM_FAILURE,
+    GET_ROOM_SUCCESS,
     NEW_REVIEW_FAILURE,
     NEW_REVIEW_REQUEST,
     NEW_REVIEW_RESET,
     NEW_REVIEW_SUCCESS,
     REVIEW_AVAILABILITY_FAILURE,
     REVIEW_AVAILABILITY_REQUEST,
-    REVIEW_AVAILABILITY_SUCCESS
+    REVIEW_AVAILABILITY_SUCCESS,
+    GET_ROOMS_ADMIN_FAILURE,
+    GET_ROOMS_ADMIN_REQUEST,
+    GET_ROOMS_ADMIN_SUCCESS,
+    NEW_ROOM_ADMIN_FAILURE,
+    NEW_ROOM_ADMIN_REQUEST,
+    NEW_ROOM_ADMIN_RESET,
+    NEW_ROOM_ADMIN_SUCCESS,
+    UPDATE_ROOM_ADMIN_FAILURE,
+    UPDATE_ROOM_ADMIN_REQUEST,
+    UPDATE_ROOM_ADMIN_SUCCESS,
+    UPDATE_ROOM_ADMIN_RESET,
+    DELETE_ROOM_ADMIN_FAILURE,
+    DELETE_ROOM_ADMIN_REQUEST,
+    DELETE_ROOM_ADMIN_SUCCESS,
+    DELETE_ROOM_ADMIN_RESET,
+    CLEAR_ERRORS,
 } from "../constants/roomConstants";
 
-export const allRoomsReducer = (state = { rooms: [] }, action) => {
+export const allRoomsReducer = (state = { rooms: [], loading: true }, action) => {
     switch (action.type) {
+        case GET_ROOMS_ADMIN_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
         case GET_ROOMS_SUCCESS:
             return {
                 roomsCount: action.payload.roomsCount,
@@ -19,8 +43,16 @@ export const allRoomsReducer = (state = { rooms: [] }, action) => {
                 rooms: action.payload.rooms
             }
 
-        case GET_ROOMS_FAILURE:
+        case GET_ROOMS_ADMIN_SUCCESS:
             return {
+                loading: false,
+                rooms: action.payload
+            }
+
+        case GET_ROOMS_FAILURE:
+        case GET_ROOMS_ADMIN_FAILURE:
+            return {
+                loading: false,
                 error: action.payload
             }
 
@@ -41,7 +73,85 @@ export const roomDetailsReducer = (state = { room: {} }, action) => {
 
         case GET_ROOM_FAILURE:
             return {
+                ...state,
                 error: action.payload
+            }
+
+        case CLEAR_ERRORS:
+            return { error: null, ...state }
+
+        default:
+            return { ...state }
+    }
+}
+
+export const newRoomAdminReducer = (state = { room: {} }, action) => {
+    switch (action.type) {
+        case NEW_ROOM_ADMIN_REQUEST:
+            return {
+                loading: true,
+            }
+        case NEW_ROOM_ADMIN_SUCCESS:
+            return {
+                loading: false,
+                success: action.payload.success,
+                room: action.payload.room
+            }
+
+        case NEW_ROOM_ADMIN_FAILURE:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case NEW_ROOM_ADMIN_RESET:
+            return {
+                loading: false,
+                success: false
+            }
+
+        case CLEAR_ERRORS:
+            return { error: null, ...state }
+
+        default:
+            return { ...state }
+    }
+}
+
+export const roomAdminReducer = (state = {}, action) => {
+    switch (action.type) {
+        case UPDATE_ROOM_ADMIN_REQUEST:
+        case DELETE_ROOM_ADMIN_REQUEST:
+            return {
+                loading: true,
+            }
+        case UPDATE_ROOM_ADMIN_SUCCESS:
+            return {
+                loading: false,
+                isUpdated: action.payload
+            }
+
+        case DELETE_ROOM_ADMIN_SUCCESS:
+            return {
+                loading: false,
+                isDeleted: action.payload
+            }
+
+        case UPDATE_ROOM_ADMIN_FAILURE:
+        case DELETE_ROOM_ADMIN_FAILURE:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        case UPDATE_ROOM_ADMIN_RESET:
+            return {
+                loading: false,
+                isUpdated: false
+            }
+
+        case DELETE_ROOM_ADMIN_RESET:
+            return {
+                loading: false,
+                isDeleted: false
             }
 
         case CLEAR_ERRORS:

@@ -1,12 +1,13 @@
 import React from 'react'
 import { getSession } from 'next-auth/client'
-import Profile from '../../components/user/Profile'
-import Layout from '../../components/layout/Layout'
+import UpdateRoom from '../../../components/admin/UpdateRoom'
+import Layout from '../../../components/layout/Layout'
 
-const UpdateProfilePage = ({ session }) => {
+
+const UpdateRoomPage = () => {
     return (
-        <Layout title='Update Your Profile | Red Rooms'>
-            <Profile />
+        <Layout title=' UpdateRoom | Admin | Red Rooms'>
+            <UpdateRoom />
         </Layout>
     )
 }
@@ -14,7 +15,7 @@ const UpdateProfilePage = ({ session }) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession({ req: context.req })
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
         return {
             redirect: {
                 destination: '/login',
@@ -24,7 +25,7 @@ export async function getServerSideProps(context) {
     }
 
     return {
-        props: { session }
+        props: {}
     }
 }
-export default UpdateProfilePage
+export default UpdateRoomPage
