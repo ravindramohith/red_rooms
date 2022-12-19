@@ -88,7 +88,6 @@ const RoomDetails = () => {
             const stripe = await getStripe();
             stripe.redirectToCheckout({ sessionId: data.id })
             setPaymentLoading(false);
-
         } catch (err) {
             setPaymentLoading(false);
             console.log(err);

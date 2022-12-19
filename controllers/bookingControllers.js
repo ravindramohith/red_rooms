@@ -96,6 +96,16 @@ export const getMyBookings = catchAsync(async (req, res) => {
     })
 })
 
+export const getAllBookingsAdmin = catchAsync(async (req, res) => {
+
+    const bookings = await Booking.find()
+
+    res.status(200).json({
+        success: true,
+        bookings
+    })
+})
+
 
 export const getBooking = catchAsync(async (req, res) => {
 
@@ -110,5 +120,20 @@ export const getBooking = catchAsync(async (req, res) => {
     res.status(200).json({
         success: true,
         booking
+    })
+})
+
+export const deleteBooking = catchAsync(async (req, res, next) => {
+
+    const booking = await Booking.findById(req.query.id)
+
+    if (!booking) {
+        return next(new ErrorHandler("Booking not found with id " + req.query.id, 400))
+    }
+
+    await booking.remove()
+
+    res.status(200).json({
+        success: true,
     })
 })

@@ -10,6 +10,13 @@ import {
     MY_BOOKINGS_SUCCESS,
     GET_BOOKING_FAILURE,
     GET_BOOKING_SUCCESS,
+    GET_BOOKINGS_ADMIN_REQUEST,
+    GET_BOOKINGS_ADMIN_SUCCESS,
+    GET_BOOKINGS_ADMIN_FAILURE,
+    DELETE_BOOKINGS_ADMIN_FAILURE,
+    DELETE_BOOKINGS_ADMIN_REQUEST,
+    DELETE_BOOKINGS_ADMIN_RESET,
+    DELETE_BOOKINGS_ADMIN_SUCCESS,
     CLEAR_ERRORS
 } from "../constants/bookingConstants";
 
@@ -60,6 +67,34 @@ export const getMyBookings = (authCookie, req) => async (dispatch) => {
         })
     } catch (e) {
         dispatch({ type: MY_BOOKINGS_FAILURE, payload: e });
+        return;
+    }
+}
+
+export const getAllBookingsAdmin = () => async (dispatch) => {
+    try {
+        dispatch({ type: GET_BOOKINGS_ADMIN_REQUEST })
+        const { data } = await axios.get('/api/admin/bookings')
+        dispatch({
+            type: GET_BOOKINGS_ADMIN_SUCCESS,
+            payload: data,
+        })
+    } catch (e) {
+        dispatch({ type: GET_BOOKINGS_ADMIN_FAILURE, payload: e });
+        return;
+    }
+}
+
+export const deleteBookingAdmin = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: DELETE_BOOKINGS_ADMIN_REQUEST })
+        const { data } = await axios.delete(`/api/admin/bookings/${id}`)
+        dispatch({
+            type: DELETE_BOOKINGS_ADMIN_SUCCESS,
+            payload: data,
+        })
+    } catch (e) {
+        dispatch({ type: DELETE_BOOKINGS_ADMIN_FAILURE, payload: e });
         return;
     }
 }

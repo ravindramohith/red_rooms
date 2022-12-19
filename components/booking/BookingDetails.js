@@ -12,13 +12,14 @@ const BookingDetails = () => {
 
     const dispatch = useDispatch()
     const { booking, error } = useSelector(state => state.bookingDetails)
+    const { user } = useSelector(state => state.auth)
     React.useEffect(() => {
         if (error) {
             toast.error(error)
             dispatch(clearErrors())
         }
     }, [dispatch])
-
+    const isPaid = booking.paymentInfo && booking.paymentInfo.status === 'paid' ? true : false
     return (
         <div className="container">
             <div className="row d-flex justify-content-between">
@@ -40,10 +41,18 @@ const BookingDetails = () => {
 
                             <hr />
 
-                            <h4 className="my-4">Payment Status</h4>
-                            <p className="greenColor"><b>Paid</b></p>
 
-                            <h4 className="mt-5 mb-4">Booked Room:</h4>
+                            <h4 className="my-4">Payment Status</h4>
+                            <p className={isPaid ? 'greenColor' : 'redColor'}><b>{isPaid ? 'Paid' : 'Not Paid'}</b></p>
+
+                            {user && user.role === 'admin' &&
+                                <>
+                                    <h4 className="my-4">Stripe Payment ID</h4>
+                                    <p className='redColor'><b>{booking.paymentInfo.id}</b></p>
+                                </>
+                            }
+
+                            <h4 className="mt-5 mb-4">Booked Room: </h4>
 
                             <hr />
                             <div className="cart-item my-1">
