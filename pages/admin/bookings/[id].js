@@ -16,7 +16,7 @@ const BookingDetailsPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
     const session = await getSession({ req: context.req })
 
-    if (!session) {
+    if (!session || session.user.role !== 'admin') {
         return {
             redirect: {
                 destination: '/login',

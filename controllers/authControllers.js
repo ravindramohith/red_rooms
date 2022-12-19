@@ -43,6 +43,58 @@ export const getCurrentUser = catchAsync(async (req, res) => {
     })
 })
 
+export const getAllUsersAdmin = catchAsync(async (req, res) => {
+    const users = await User.find();
+
+    res.status(200).json({
+        success: true,
+        users,
+    })
+})
+
+export const getUserAdmin = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.query.id);
+
+    if (!user) {
+        return next(new ErrorHandler('User not found with id ' + req.query.id))
+    }
+
+    res.status(200).json({
+        success: true,
+        user,
+    })
+})
+
+export const deleteUserAdmin = catchAsync(async (req, res, next) => {
+    const user = await User.findById(req.query.id);
+
+    if (!user) {
+        return next(new ErrorHandler('User not found with id ' + req.query.id))
+    }
+
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+
+    await user.remove()
+
+    res.status(200).json({
+        success: true,
+    })
+})
+
+export const updateUserAdmin = catchAsync(async (req, res) => {
+
+    const newUser = {
+        name: req.body.name,
+        email: req.body.email,
+        role: req.body.role
+    }
+
+    const user = await User.findByIdAndUpdate(req.query.id, newUser, { new: true, runValidators: true, useFindAndModify: false });
+    res.status(200).json({
+        success: true,
+    })
+})
+
 //update user
 export const updateCurrentUser = catchAsync(async (req, res) => {
     const user = await User.findById(req.user._id);
