@@ -12,7 +12,7 @@ const BookingDetails = () => {
 
     const dispatch = useDispatch()
     const { booking, error } = useSelector(state => state.bookingDetails)
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.loadUser)
     React.useEffect(() => {
         if (error) {
             toast.error(error)

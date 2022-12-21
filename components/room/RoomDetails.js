@@ -22,7 +22,7 @@ const RoomDetails = () => {
     const [checkOutDate, setCheckOutDate] = React.useState()
     const [daysOfStay, setDaysOfStay] = React.useState()
     const [paymentLoading, setPaymentLoading] = React.useState(false)
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.loadUser)
     const { dates } = useSelector(state => state.bookedDates)
     const { room, error } = useSelector(state => state.roomDetails)
     const { available, loading: bookLoading } = useSelector(state => state.checkBooking)

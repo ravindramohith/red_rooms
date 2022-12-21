@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 import { getAllBookingsAdmin, deleteBookingAdmin, clearErrors } from '../../redux/actions/bookingActions'
 import { DELETE_BOOKINGS_ADMIN_RESET } from '../../redux/constants/bookingConstants'
+import { BiRupee } from 'react-icons/bi'
 
 const AllBookings = () => {
 
@@ -82,7 +83,7 @@ const AllBookings = () => {
                 id: booking._id,
                 checkIn: new Date(booking.checkInDate).toLocaleString('en-US'),
                 checkOut: new Date(booking.checkOutDate).toLocaleString('en-US'),
-                amount: `$${booking.amountPaid}`,
+                amount: <><BiRupee />{booking.amountPaid}</>,
                 actions:
                     <>
                         <Link href={`/admin/bookings/${booking._id}`}>

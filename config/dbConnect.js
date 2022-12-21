@@ -5,12 +5,7 @@ const dbConnect = () => {
         return
     }
 
-    mongoose.connect(process.env.DB_LOCAL_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        useCreateIndex: true
-    }).then(()=>{console.log("Successfully connected to MongoDB")}).catch((err)=>{console.log("Error connecting to MongoDB, Error:",err)})
+    mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, }).then(() => { console.log("Successfully connected to MongoDB") }).catch((err) => { console.log("Error connecting to MongoDB, Error:", err) })
 
 }
 

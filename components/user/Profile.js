@@ -15,7 +15,7 @@ const Profile = () => {
     const [avatar, setAvatar] = React.useState('')
     const [avatarPerview, setAvatarPerview] = React.useState('/images/search-bg.jpg')
     const { isUpdated, error, loading: updateLoading } = useSelector(state => state.user)
-    const { user: loadedUser, loading } = useSelector(state => state.auth)
+    const { user: loadedUser, loading } = useSelector(state => state.loadUser)
     const { name, email, password } = user
 
     React.useEffect(() => {

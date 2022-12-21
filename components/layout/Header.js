@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 const Header = () => {
 
     const dispatch = useDispatch()
-    const { user, loading } = useSelector(state => state.auth)
+    const { user, loading } = useSelector(state => state.loadUser)
 
     React.useEffect(() => {
         dispatch(loadUser())
@@ -24,7 +24,9 @@ const Header = () => {
             <div className="container">
                 <div className="col-3 p-0">
                     <div className="navbar-brand">
-                        <img style={{ cursor: 'pointer' }} src="/images/bookit_logo.png" alt="BookIT" />
+                        <Link href='/'>
+                            <img style={{ cursor: 'pointer', width: "230px" }} src="/images/RedRooms_logo.png" alt="BookIT" />
+                        </Link>
                     </div>
                 </div>
 
