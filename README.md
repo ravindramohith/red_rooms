@@ -17,14 +17,16 @@ npm run dev
 yarn dev
 ```
 
-If u wanted to seed the data:
+If you wanted to seed the data:
 
+- for adding data to your database,
 ```bash
 npm run seeder --import
-``` - for adding data to your database,
+```
+ - for deleting all the data from your database,
 ```bash
 npm run seeder --delete
-``` - for deleting all the data from yur database
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
