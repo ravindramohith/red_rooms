@@ -1,14 +1,30 @@
 # This is a Next.js Full Stack Project.
 
 ## Getting Started
+First, Install all the required packages:
 
-First, run the development server:
+```bash
+npm install
+# or
+yarn add
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
 ```
+
+If u wanted to seed the data:
+
+```bash
+npm run seeder --import
+``` - for adding data to your database,
+```bash
+npm run seeder --delete
+``` - for deleting all the data from yur database
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -20,14 +36,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - There is also and admin portal which can perform CRUD operations on Users, Rooms, Bookings, Reviews.
 
 ## Server Side:
-- Used *MongoDB* for storing Data(NoSQL DB).
-- Used *mongoose* to connect our application to MongoDB and for creating models such as **Room, User, Booking**.
+- Used **MongoDB** for storing Data(NoSQL DB).
+- Used **mongoose** to connect our application to MongoDB and for creating *models* such as **Room, User, Booking**.
 - Created all server side **routes** in `pages/api/` folder.
 - Implemented each **controller** for each route in `controllers/` folder.
 - Implemented various **middlewares** such as Error handlers, Authenticators, etc. in `middlewares/` folder.
-- Implemented Authentication by using *Next Auth*.
-- Used *cloudinary* to upload all the images.
-- Integrated with *Stripe* for payments.
+- Implemented Authentication by using **Next Auth**.
+- Used **cloudinary** to upload all the images.
+- Integrated with **Stripe** for payments.
 
 ###### You can view the postman's documentation [here](https://documenter.getpostman.com/view/21503860/2s8Z73yApo).
 
@@ -36,8 +52,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Constructed the Basic Layout under `components/layout/` folder.
 - Contructed all other components under `components/` folder.
 - Used `Next Link` for switching between pages.
-- Used *Next Auth* for creating sessions and protecting Users.
-- Implemented pagination by using `React pagination` for viewing all the Items in a systematic manner.
+- Used **Next Auth** for creating sessions to protect certain routes.
+- Implemented pagination by using *React pagination* for viewing all the Items in a systematic manner.
 - Implemented search bar for searching various rooms by entering their locations and categories through **query params**.
 - Implemented Carousel for viewing Rooms by scrolling, and Calender by chhosing dates of booking the rooms.
-- Used ***Stripe checkout page*** for payments and *webhooks* to redirect back.
+- Used ***Stripe checkout page*** for payments and **webhooks** to redirect back.
