@@ -47,7 +47,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Used **cloudinary** to upload all the images.
 - Integrated with **Stripe** for payments.
 
-###### You can view the postman's documentation [here](https://documenter.getpostman.com/view/21503860/2s8Z73yApo).
+###### You can view the postman's documentation of API [here](https://documenter.getpostman.com/view/21503860/2s8Z73yApo).
 
 ## Client Side:
 - Created all client side **routes/urls** in `pages/` folder.
@@ -55,6 +55,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Contructed all other components under `components/` folder.
 - Used `Next Link` for switching between pages.
 - Used **Next Auth** for creating sessions to protect certain routes.
+- Used **Redux** for **Global State Management** by wrapping application under store and creating all the reducers in `reducers/` folder with help of all global constants in `constants/` folder by controlling it with the actions in `actions/` folder.
 - Implemented pagination by using *React pagination* for viewing all the Items in a systematic manner.
 - Implemented search bar for searching various rooms by entering their locations and categories through **query params**.
 - Implemented Carousel for viewing Rooms by scrolling, and Calender by chhosing dates of booking the rooms.
