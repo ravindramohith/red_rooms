@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# This is a Next.js Full Stack Project.
 
 ## Getting Started
 
@@ -12,23 +12,32 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+##### Next.Js has routes embedded in folder, we can handle all our pages in that folder by creating the files with route name. for the server side routes, there is a api folder in which we can create api routes by creating files of the route name.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Overview
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- This Hotel Booking App AKA Red Rooms is used for booking rooms in various hotels. User can check if the room is available at particular date and can book the room by logging in and paying with stripe. User can review on the Room already he had booked before only. Each room has its number of ratings by users, average ratings(Out of 5). User can edit his own profile and can change his Avatar too.
+- There is also and admin portal which can perform CRUD operations on Users, Rooms, Bookings, Reviews.
 
-## Learn More
+## Server Side:
+- Used *MongoDB* for storing Data(NoSQL DB).
+- Used *mongoose* to connect our application to MongoDB and for creating models such as **Room, User, Booking**.
+- Created all server side **routes** in `pages/api/` folder.
+- Implemented each **controller** for each route in `controllers/` folder.
+- Implemented various **middlewares** such as Error handlers, Authenticators, etc. in `middlewares/` folder.
+- Implemented Authentication by using *Next Auth*.
+- Used *cloudinary* to upload all the images.
+- Integrated with *Stripe* for payments.
 
-To learn more about Next.js, take a look at the following resources:
+###### You can view the postman's documentation [here](https://documenter.getpostman.com/view/21503860/2s8Z73yApo).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Client Side:
+- Created all client side **routes/urls** in `pages/` folder.
+- Constructed the Basic Layout under `components/layout/` folder.
+- Contructed all other components under `components/` folder.
+- Used `Next Link` for switching between pages.
+- Used *Next Auth* for creating sessions and protecting Users.
+- Implemented pagination by using `React pagination` for viewing all the Items in a systematic manner.
+- Implemented search bar for searching various rooms by entering their locations and categories through **query params**.
+- Implemented Carousel for viewing Rooms by scrolling, and Calender by chhosing dates of booking the rooms.
+- Used ***Stripe checkout page*** for payments and *webhooks* to redirect back.
