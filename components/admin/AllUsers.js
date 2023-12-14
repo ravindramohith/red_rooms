@@ -69,7 +69,7 @@ const AllUsers = () => {
                 role: <>{element.role}</>,
                 actions: (
                     <>
-                        <Link href={`/admin/users/${element._id}`}>
+                        <Link href={`/admin/users/${element._id}`} legacyBehavior>
                             <button className='btn btn-warning'>
                                 <i className='fa fa-pencil'></i>
                             </button>

@@ -69,12 +69,12 @@ const AllRooms = () => {
                 price: <><BiRupee />{element.pricePerNight}</>,
                 actions: (
                     <>
-                        <Link href={`/room/${element._id}`}>
+                        <Link href={`/room/${element._id}`} legacyBehavior>
                             <button className='btn btn-primary'>
                                 <i className='fa fa-eye'></i>
                             </button>
                         </Link>
-                        <Link href={`/admin/rooms/${element._id}`}>
+                        <Link href={`/admin/rooms/${element._id}`} legacyBehavior>
                             <button className='btn btn-warning'>
                                 <i className='fa fa-pencil'></i>
                             </button>
@@ -96,8 +96,10 @@ const AllRooms = () => {
     return (
         <div className='container container-fluid'>
             <h1 className='my-5'>
-                <Link href='/admin/rooms/new'>
-                    <a className='my-0 mt-0 mb-0 btn text-white float-right new-room-btn'>Create Room</a>
+                <Link
+                    href='/admin/rooms/new'
+                    className='my-0 mt-0 mb-0 btn text-white float-right new-room-btn'>
+                    Create Room
                 </Link>
             </h1>
             <h1 className='mt-5 mb-3'>{loading ? ("Fetching All Rooms...") : `All Rooms`}</h1>
@@ -114,7 +116,7 @@ const AllRooms = () => {
                 </>
             )}
         </div>
-    )
+    );
 }
 
 export default AllRooms
