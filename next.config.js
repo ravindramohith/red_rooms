@@ -16,7 +16,7 @@ const nextConfig = {
     DB_LOCAL_URI: "mongodb://localhost:27017/RedRooms",
     DB_URI:
       "mongodb://mohith:sandy@ac-tswascw-shard-00-00.op7d7ju.mongodb.net:27017,ac-tswascw-shard-00-01.op7d7ju.mongodb.net:27017,ac-tswascw-shard-00-02.op7d7ju.mongodb.net:27017/redRooms?ssl=true&replicaSet=atlas-a6kv3r-shard-0&authSource=admin&retryWrites=true&w=majority",
-    NEXTAUTH_URL: "https://red-rooms-ravindramohith.vercel.app",
+    NEXTAUTH_URL: "https://redrooms.vercel.app",
     CLOUDINARY_CLOUD_NAME,
     CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET,
