@@ -36,6 +36,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - This Hotel Booking App AKA Red Rooms is used for booking rooms in various hotels. User can check if the room is available at particular date and can book the room by logging in and paying with stripe. User can review on the Room already he had booked before only. Each room has its number of ratings by users, average ratings(Out of 5). User can edit his own profile and can change his Avatar too.
 - There is also and admin portal which can perform CRUD operations on Users, Rooms, Bookings, Reviews.
+- Deployed on Vercel using built-in CI/CD pipeline. You can view deployments [here](https://github.com/ravindramohith/red_rooms/deployments/Production)
 
 ## Server Side:
 - Used **MongoDB** for storing Data(NoSQL DB).
