@@ -1,4 +1,4 @@
-# This is a Next.js Full Stack Project.
+# Red-Rooms: A Next.js Full Stack Project.
 
 ## Getting Started
 First, Install all the required packages:
